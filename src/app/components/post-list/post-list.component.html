@@ -1,0 +1,24 @@
+<div class="container mb-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2 class="mt-4 mb-4 text-center fw-bold">Latest Posts</h2>
+      <div *ngFor="let post of posts" class="list-group mb-2">
+        <a [routerLink]="['/post', post.id]" class="list-group-item list-group-item-action">
+          <div class="row">
+            <div class="col-md-3">
+              <img *ngIf="post.imageUrl" [src]="post.imageUrl" class="img-fluid" alt="Post Image">
+            </div>
+            <div class="col-md-9">
+              <h4 class="mb-1">{{ post.title }}</h4>
+              <p class="mb-1">{{ post.content.substring(0, 50) }}{{ post.content.length > 50 ? '...' : '' }}</p>
+              <small class="text-muted">Posted by {{ post.author | titlecase }} on {{ post.date | date : "dd/MMM/yy" }}</small>
+              <div class="mt-2">
+                <span *ngFor="let tag of post.tags" class="badge bg-primary p-1/2 m-1">{{ tag }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

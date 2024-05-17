@@ -1,0 +1,29 @@
+<div class="container mt-5 mb-5">
+  <h2 class="text-center mb-2">Edit Blog Post</h2>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" class="form-control" formControlName="title" id="title" name="title" placeholder="Enter post title" required>
+    </div>
+    <div class="mb-3">
+      <label for="content" class="form-label">Content</label>
+      <textarea class="form-control" formControlName="content" id="content" name="content" rows="6" placeholder="Enter post content" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="author" class="form-label">Author</label>
+      <input type="text" class="form-control" formControlName="author" id="author" name="author" placeholder="Enter your name" required>
+    </div>
+    <div class="mb-3">
+      <label for="tags" class="form-label">Tags</label>
+      <input type="text" class="form-control" formControlName="tags" id="tags" name="tags" placeholder="Enter tags separated by commas">
+      <div id="tagsHelp" class="form-text">Enter tags separated by commas (e.g., technology, programming).</div>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <div class="input-group">
+        <input type="text" class="form-control" formControlName="imageUrl" id="imageUrl" name="imageUrl" placeholder="Enter image URL">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>
