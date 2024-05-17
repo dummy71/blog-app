@@ -8,9 +8,7 @@ import { EditPostComponent } from './edit-post/edit-post.component';
 const routes: Routes = [
   { path: '', component: PostListComponent },
   { path: 'create', component: CreatePostComponent },
-  { path: 'post/:id', component: PostDetailComponent, children : [
-    { path: 'edit', component: EditPostComponent }
-  ] },
+  { path: 'post/:id', component: PostDetailComponent},
   { path: 'edit/:id', component: EditPostComponent },
   { path: '**', redirectTo: '' }
 ];
