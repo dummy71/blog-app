@@ -1,0 +1,25 @@
+.container-fullscreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.no-posts {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+}
+
+.no-posts-icon {
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+p {
+  margin-bottom: 20px;
+}

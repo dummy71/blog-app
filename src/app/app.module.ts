@@ -10,6 +10,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditPostComponent } from './edit-post/edit-post.component';
+import { environment } from 'src/environments/environment';
+import { NoPostsComponent } from './no-posts/no-posts.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,13 @@ import { EditPostComponent } from './edit-post/edit-post.component';
     NavbarComponent,
     FooterComponent,
     CreatePostComponent,
-    EditPostComponent
+    EditPostComponent,
+    NoPostsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
