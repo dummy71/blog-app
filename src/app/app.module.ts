@@ -9,9 +9,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EditPostComponent } from './edit-post/edit-post.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { environment } from 'src/environments/environment';
-import { NoPostsComponent } from './no-posts/no-posts.component';
+import { NoPostsComponent } from './components/no-posts/no-posts.component';
 
 @NgModule({
   declarations: [

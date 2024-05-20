@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PostService } from '../services/post.service';
-import { Post } from '../model/post.model'
+import { PostService } from '../../services/post.service';
+import { Post } from '../../model/post.model'
 import { error } from 'console';
 import { Subscription } from 'rxjs';
 
