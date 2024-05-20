@@ -3,6 +3,7 @@ import { Post } from '../model/post.model';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, catchError, Observable, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class PostService {
 
   postListSubject :  BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router,private http : HttpClient) {}
 
   addBlogPost(formData: FormGroup): void {
     const title = formData.value.title;
@@ -47,6 +48,11 @@ export class PostService {
 
       this.posts = [...this.posts, this.bloggPost];
       console.log('Posts service: ', this.posts);
+
+      //Post Request
+      this.http.post('https://blogg-app-4e43a-default-rtdb.firebaseio.com/posts.json', this.bloggPost).subscribe( responseData => {
+        console.log(responseData);
+      });
 
       this.formDataSubject.next(this.bloggPost);
       this.postListSubject.next(this.posts);

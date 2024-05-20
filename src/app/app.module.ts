@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { environment } from 'src/environments/environment';
 import { NoPostsComponent } from './components/no-posts/no-posts.component';
-
+import { HttpClientModule } from '@angular/common/http'
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +28,7 @@ import { NoPostsComponent } from './components/no-posts/no-posts.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
