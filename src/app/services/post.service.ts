@@ -1,19 +1,19 @@
+import { DataService } from './data.service';
 import { Injectable } from '@angular/core';
 import { Post } from '../model/post.model';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, catchError, Observable, of, throwError } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  posts: Post[] = [];
-  bloggPost!: Post;
-  currId: number = 0;
+  private posts: Post[] = [];
+  private currId = 0;
 
-  formDataSubject: BehaviorSubject<Post> = new BehaviorSubject<Post>({
+  private formDataSubject: BehaviorSubject<Post> = new BehaviorSubject<Post>({
     id: 0,
     title: '',
     content: '',
@@ -23,77 +23,73 @@ export class PostService {
     imageUrl: ''
   });
 
-  postListSubject :  BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
+  private postListSubject: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
 
-  constructor(private route: ActivatedRoute, private router: Router,private http : HttpClient) {}
+  constructor(private router: Router, private dataService: DataService) {}
 
   addBlogPost(formData: FormGroup): void {
-    const title = formData.value.title;
-    const content = formData.value.content;
-    const author = formData.value.author;
-    const tagsString = formData.value.tags;
+    const { title, content, author, tags: tagsString, imageUrl } = formData.value;
     const tags: string[] = tagsString ? tagsString.split(',') : [];
-    const imageUrl = formData.value.imageUrl;
 
     if (title && content && author && tags && imageUrl) {
-      this.bloggPost = {
+      const newPost: Post = {
         id: ++this.currId,
-        title: title,
-        content: content,
-        author: author,
+        title,
+        content,
+        author,
         date: Date.now(),
-        tags: tags,
-        imageUrl: imageUrl
+        tags,
+        imageUrl
       };
 
-      this.posts = [...this.posts, this.bloggPost];
-      console.log('Posts service: ', this.posts);
+      this.posts = [...this.posts, newPost];
 
-      //Post Request
-      this.http.post('https://blogg-app-4e43a-default-rtdb.firebaseio.com/posts.json', this.bloggPost).subscribe( responseData => {
+      this.dataService.addPost(newPost).subscribe(responseData => {
         console.log(responseData);
       });
 
-      this.formDataSubject.next(this.bloggPost);
+      this.formDataSubject.next(newPost);
       this.postListSubject.next(this.posts);
 
-      this.router.navigate(['post', this.bloggPost.id]);
+      this.router.navigate(['post', newPost.id]);
     } else {
       console.error('Error: Form data contains null or undefined values.');
     }
   }
-
-  // getFormData() : FormGroup{
-  //   return formData;
-  // }
 
   getPosts(): Post[] {
     return this.posts;
   }
 
   fetchPost(id: number): Observable<Post | undefined> {
-    const post = this.posts.find(post => post.id === id);
-    return post ? new Observable(observer => {
-      observer.next(post);
-      observer.complete();
-    }) : new Observable();
+    return this.dataService.fetchPostById(id).pipe(
+      catchError(error => {
+        console.error('Error fetching post:', error);
+        return of(undefined);
+      })
+    );
   }
 
   updatePost(updatedPost: Post): Observable<Post> {
     const index = this.posts.findIndex(post => post.id === updatedPost.id);
     if (index !== -1) {
-      this.posts[index] = updatedPost;
-      this.postListSubject.next(this.posts);
-      return of(updatedPost);
+      return this.dataService.updatePost(updatedPost.id, updatedPost).pipe(
+        catchError(error => {
+          console.error('Error updating post:', error);
+          return throwError(() => new Error('Post not found'));
+        })
+      );
     } else {
       return throwError(() => new Error('Post not found'));
     }
   }
 
   deletePost(id: number): void {
-    this.posts = this.posts.filter(post => post.id !== id);
-    this.postListSubject.next(this.posts);
-    this.router.navigate(['']);
+    this.dataService.deletePost(id).subscribe(() => {
+      this.posts = this.posts.filter(post => post.id !== id);
+      this.postListSubject.next(this.posts);
+      this.router.navigate(['']);
+    });
   }
 
   getFormData(): Observable<Post> {

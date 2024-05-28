@@ -11,6 +11,7 @@ import { PostService } from 'src/app/services/post.service';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [] ;
   mySubscription !: Subscription;
+
   selectedPost : Post = {
     id: 0,
     title: '',
@@ -39,8 +40,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       if (postData) {
         this.selectedPost = postData;
       } else {
-        console.error("Post not found.");
-        // Optionally, you can handle the case where the post is not found
+        console.error('Post not found.');
+        // Optionally, handle the case where the post is not found
       }
     });
   }

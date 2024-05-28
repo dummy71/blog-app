@@ -11,7 +11,7 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class PostDetailComponent implements OnInit, OnDestroy {
 
-  post: Post = {
+  selectedPost : Post = {
     id: 0,
     title: '',
     content: '',
@@ -27,20 +27,23 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router : Router, private postService: PostService) { }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.mySubscription = this.postService.fetchPost(id).subscribe(post => {
+    const postId = Number(this.route.snapshot.paramMap.get('id'));
+    this.mySubscription = this.postService.fetchPost(postId).subscribe(post => {
       if (post) {
-        this.post = post;
+        this.selectedPost = post;
       }
       else {
         alert('Post Not Found!!!')
       }
     });
-
   }
 
+  // fetchPostById(id : number){
+
+  // }
+
   onEditPost(id : number){
-    this.router.navigate(['/edit',this.post.id]);
+    this.router.navigate(['/edit',this.selectedPost.id]);
   }
 
   onDeletePost(id : number){
